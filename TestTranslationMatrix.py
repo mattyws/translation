@@ -3,7 +3,7 @@ import logging
 from gensim.models import TranslationMatrix
 from gensim.models.keyedvectors import KeyedVectors
 from googletrans import Translator
-from sklearn.metrics.classification import accuracy_score
+from sklearn.metrics.classification import accuracy_score, recall_score, precision_score, f1_score
 
 import learn
 import os
@@ -48,11 +48,27 @@ print("================================== Testing Translation Matrix ===========
 translation_model = TranslationMatrix.load("/home/mattyws/Downloads/Wikipedia/translation_matrix.model")
 real = []
 pred = []
+top5_pred = []
 for pair in test_word_pairs:
-    translation = translation_model.translate(pair[0], sample_num=4).popitem()
+    translation = translation_model.translate(pair[0], sample_num=5).popitem()
     real.append(pair[1])
     pred.append(translation[1][0])
-    print(real, pred)
-    break
-print(accuracy_score(real, pred))
-print(accuracy_score(real, pred))
+    if pair[1] in translation[1]:
+        top5_pred.append(pair[1])
+    else:
+        top5_pred.append(translation[1][0])
+
+save_obj(pred, 'prediction')
+save_obj(real, 'real')
+save_obj(top5_pred, 'top_5_prediction')
+accuracy = accuracy_score(real, pred)
+recall = recall_score(real, pred, average='weighted')
+precision = precision_score(real, pred, average='weighted')
+f1 = f1_score(real, pred, average='weighted')
+print("Accuracy " + str(accuracy), "Recall " + str(recall), "Precision " + str(precision), "F1 " + str(f1))
+
+accuracy = accuracy_score(real, top5_pred)
+recall = recall_score(real, top5_pred, average='weighted')
+precision = precision_score(real, top5_pred, average='weighted')
+f1 = f1_score(real, top5_pred, average='weighted')
+print("Top5: Accuracy " + str(accuracy), "Recall " + str(recall), "Precision " + str(precision), "F1 " + str(f1))
