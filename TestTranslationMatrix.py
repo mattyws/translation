@@ -49,7 +49,11 @@ translation_model = TranslationMatrix.load("/home/mattyws/Downloads/Wikipedia/tr
 real = []
 pred = []
 top5_pred = []
+i = 0
 for pair in test_word_pairs:
+    if i % 10 == 0:
+        print(i)
+    i+=1
     translation = translation_model.translate(pair[0], sample_num=5).popitem()
     real.append(pair[1])
     pred.append(translation[1][0])
@@ -72,3 +76,6 @@ recall = recall_score(real, top5_pred, average='weighted')
 precision = precision_score(real, top5_pred, average='weighted')
 f1 = f1_score(real, top5_pred, average='weighted')
 print("Top5: Accuracy " + str(accuracy), "Recall " + str(recall), "Precision " + str(precision), "F1 " + str(f1))
+
+# Accuracy 0.399 Recall 0.399 Precision 0.40991666666666665 F1 0.39979999999999993
+# Top5: Accuracy 0.557 Recall 0.557 Precision 0.5647916666666666 F1 0.5564888888888888
