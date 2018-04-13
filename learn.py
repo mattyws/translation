@@ -1,5 +1,6 @@
 import csv
 
+from gensim.models.fasttext import FastText
 from sklearn.model_selection import KFold
 from gensim.models import doc2vec
 from gensim.models.word2vec import Word2Vec
@@ -68,7 +69,7 @@ class FastTextTrainer(object):
         self.model = None
 
     def train(self, corpus, sg=0, callbacks=None):
-        self.model = Word2Vec(corpus, callbacks=callbacks, min_count=self.min_count, size=self.size,
+        self.model = FastText(corpus, callbacks=callbacks, min_count=self.min_count, size=self.size,
                               workers=self.workers, window=self.window, iter=self.iter, sg=sg)
 
     def save(self, filename):

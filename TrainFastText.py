@@ -54,7 +54,7 @@ tokenizer = nltk.tokenize.RegexpTokenizer(r'\w+')
 stop_set = nltk.corpus.stopwords.words(language)
 stemmer = gensim.parsing.PorterStemmer()
 output_model_path = "/media/mattyws/Dados/Wikipedia/models/"
-output_model_file = "portuguese_wikipedia"
+output_model_file = "portuguese_wikipedia_fasttext"
 iteration = 10
 size = 300
 last_model = get_last_model(output_model_path, output_model_file)
@@ -69,13 +69,13 @@ data = Word2VecDataIter(all_corpus, cleaner)
 if last_model is None:
     epoch_saver = EpochSaver(output_model_path+output_model_file)
     print("=============================== Training Model ===============================")
-    word2vecTrainer = learn.Word2VecTrainer(iter=iteration, size=size)
+    word2vecTrainer = learn.FastTextTrainer(iter=iteration, size=size)
     word2vecTrainer.train(all_corpus, sg=sg, callbacks=[epoch_saver])
 else:
     iteration -= int(get_elapsed_epoch(last_model))
     epoch_saver = EpochSaver(output_model_path+output_model_file, int(get_elapsed_epoch(last_model))+1)
     print("=============================== Training Existing Model ===============================")
-    word2vecTrainer = learn.Word2VecTrainer(iter=iteration, size=size)
+    word2vecTrainer = learn.FastTextTrainer(iter=iteration, size=size)
     model = word2vecTrainer.load_model(output_model_path+last_model)
     word2vecTrainer.retrain(model, all_corpus, sg=sg, iter=iteration, callbacks=[epoch_saver])
 

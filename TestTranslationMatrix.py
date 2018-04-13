@@ -11,7 +11,7 @@ from helpers import load_obj, save_obj
 
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
-model_path = "/home/mattyws/Downloads/Wikipedia/br/word2vec_model/"
+model_path = "/home/mattyws/Downloads/Wikipedia/br/fasttext_model/"
 model_file = "portuguese_wikipedia.model"
 
 print("================================== Loading models ==================================")
