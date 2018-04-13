@@ -1,5 +1,6 @@
 import csv
 
+from gensim.models.fasttext import FastText
 from sklearn.model_selection import KFold
 from gensim.models import doc2vec
 from gensim.models.word2vec import Word2Vec
@@ -54,24 +55,22 @@ class Word2VecTrainer(object):
         model.train(corpus, total_examples=model.corpus_count, epochs=iter, callbacks=callbacks)
         self.model = model
 
-class Doc2VecTrainer(object):
+class FastTextTrainer(object):
     """
-    Perform training and save gensim doc2vec
+    Perform training and save gensim FastText
     """
 
-    def __init__(self, min_count=2, alpha=0.025, min_alpha=0.001, size=200, workers=4, window=3, iter=10):
+    def __init__(self, min_count=2, size=200, workers=4, window=3, iter=10):
         self.min_count = min_count
-        self.alpha = alpha
-        self.min_alpha = min_alpha
         self.size = size
         self.workers = workers
         self.window = window
         self.iter = iter
         self.model = None
 
-    def train(self, corpus):
-        self.model = doc2vec.Doc2Vec(corpus, alpha=self.alpha, min_alpha=self.min_alpha, dm=0, hs=1, negative=0,
-                                min_count=self.min_count, window=self.window, workers=self.workers, size=self.size)
+    def train(self, corpus, sg=0, callbacks=None):
+        self.model = FastText(corpus, callbacks=callbacks, min_count=self.min_count, size=self.size,
+                              workers=self.workers, window=self.window, iter=self.iter, sg=sg)
 
     def save(self, filename):
         self.model.save(filename)
@@ -80,4 +79,11 @@ class Doc2VecTrainer(object):
         return self.model
 
     def load_model(self, filename):
-        return doc2vec.Doc2Vec.load(filename)
+        return Word2Vec.load(filename)
+
+    def load_google_model(self, filename):
+        return KeyedVectors.load_word2vec_format(filename, binary=True)
+
+    def retrain(self, model, corpus, sg=0, iter=10, callbacks=None):
+        model.train(corpus, total_examples=model.corpus_count, epochs=iter, callbacks=callbacks)
+        self.model = model
