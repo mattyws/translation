@@ -11,19 +11,19 @@ from helpers import load_obj, save_obj
 
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
-model_path = "/home/mattyws/Downloads/Wikipedia/br/fasttext_model/"
-model_file = "portuguese_wikipedia.model"
+model_path = "/home/mattyws/Downloads/Wikipedia/br/fasttext_models/"
+model_file = "portuguese_wikipedia_fasttext.model"
 
 print("================================== Loading models ==================================")
 translator = Translator()
-word2vecTrainer = learn.Word2VecTrainer()
-br_model = word2vecTrainer.load_model(model_path+model_file)
-en_model = word2vecTrainer.load_google_model("/home/mattyws/Downloads/Wikipedia/GoogleNews-vectors-negative300.bin")
+word2vecTrainer = learn.FastTextTrainer()
+br_model = word2vecTrainer.load_google_model("/home/mattyws/Downloads/Wikipedia/br/wiki.pt/wiki.pt")
+en_model = word2vecTrainer.load_google_model("/home/mattyws/Downloads/Wikipedia/wiki.en/wiki.en")
 word_freq = load_obj('word_count')
 
 print("================================== Loading pairs ==================================")
-word_pairs = load_obj('word_pairs3')
-if os.path.exists('/home/mattyws/Downloads/Wikipedia/br/test_word_pairs.pkl'):
+word_pairs = load_obj('word_pairs_fasttext')
+if os.path.exists('/home/mattyws/Downloads/Wikipedia/br/test_word_pairs_fasttext.pkl'):
     print("================================== Loading pairs ==================================")
     test_word_pairs = load_obj('test_word_pairs')
 else:
@@ -34,14 +34,14 @@ else:
         print(i, len(test_word_pairs), word)
         try:
             translation = translator.translate(word, src='pt', dest='en').text.lower()
-            if translation in en_model.wv.vocab and (word, translation) not in word_pairs:
+            if word in br_model.wv.vocab and translation in en_model.wv.vocab and (word, translation) not in word_pairs:
                 if not len(translation.split(' ')) > 1:
                     test_word_pairs.append((word, translation))
             i += 1
         except Exception as e:
             i+=1
             print(e)
-    save_obj(test_word_pairs, 'test_word_pairs')
+    save_obj(test_word_pairs, 'test_word_pairs_fasttext')
 
 
 print("================================== Testing Translation Matrix ==================================")
@@ -79,3 +79,6 @@ print("Top5: Accuracy " + str(accuracy), "Recall " + str(recall), "Precision " +
 
 # Accuracy 0.399 Recall 0.399 Precision 0.40991666666666665 F1 0.39979999999999993
 # Top5: Accuracy 0.557 Recall 0.557 Precision 0.5647916666666666 F1 0.5564888888888888
+# Fast text
+# Accuracy 0.491 Recall 0.491 Precision 0.4965 F1 0.48999999999999994
+# Top5: Accuracy 0.661 Recall 0.661 Precision 0.6695 F1 0.6613333333333332

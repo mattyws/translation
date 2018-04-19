@@ -53,7 +53,7 @@ language = 'portuguese'
 tokenizer = nltk.tokenize.RegexpTokenizer(r'\w+')
 stop_set = nltk.corpus.stopwords.words(language)
 stemmer = gensim.parsing.PorterStemmer()
-output_model_path = "/media/mattyws/Dados/Wikipedia/models/"
+output_model_path = "/home/mattyws/Downloads/Wikipedia/br/fasttext_models/"
 output_model_file = "portuguese_wikipedia_fasttext"
 iteration = 10
 size = 300
@@ -61,7 +61,7 @@ last_model = get_last_model(output_model_path, output_model_file)
 
 
 print("============================= Loading data =============================")
-startpath="/media/mattyws/Dados/Wikipedia/text.json"
+startpath="/home/mattyws/Downloads/Wikipedia/br/text.json"
 all_corpus = JsonWikipediaDumpReader(startpath, serve_forever=True)
 cleaner = DataCleaner(clean_text=True, tokenizer=tokenizer, stop_set=stop_set)
 data = Word2VecDataIter(all_corpus, cleaner)

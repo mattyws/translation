@@ -82,7 +82,7 @@ class FastTextTrainer(object):
         return Word2Vec.load(filename)
 
     def load_google_model(self, filename):
-        return KeyedVectors.load_word2vec_format(filename, binary=True)
+        return FastText.load_fasttext_format(filename)
 
     def retrain(self, model, corpus, sg=0, iter=10, callbacks=None):
         model.train(corpus, total_examples=model.corpus_count, epochs=iter, callbacks=callbacks)
