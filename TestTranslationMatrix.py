@@ -79,6 +79,6 @@ print("Top5: Accuracy " + str(accuracy), "Recall " + str(recall), "Precision " +
 
 # Accuracy 0.399 Recall 0.399 Precision 0.40991666666666665 F1 0.39979999999999993
 # Top5: Accuracy 0.557 Recall 0.557 Precision 0.5647916666666666 F1 0.5564888888888888
-# Fast text
+# Fast \    text
 # Accuracy 0.491 Recall 0.491 Precision 0.4965 F1 0.48999999999999994
 # Top5: Accuracy 0.661 Recall 0.661 Precision 0.6695 F1 0.6613333333333332
