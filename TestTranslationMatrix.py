@@ -22,10 +22,10 @@ en_model = word2vecTrainer.load_google_model("/home/mattyws/Downloads/Wikipedia/
 word_freq = load_obj('word_count')
 
 print("================================== Loading pairs ==================================")
-word_pairs = load_obj('word_pairs_fasttext')
-if os.path.exists('/home/mattyws/Downloads/Wikipedia/br/test_word_pairs_fasttext.pkl'):
+word_pairs = load_obj('word_pairs_fasttext_inference')
+if os.path.exists('/home/mattyws/Downloads/Wikipedia/br/test_word_pairs_fasttext_inference.pkl'):
     print("================================== Loading pairs ==================================")
-    test_word_pairs = load_obj('test_word_pairs')
+    test_word_pairs = load_obj('test_word_pairs_inference')
 else:
     i = 0
     test_word_pairs = []
@@ -34,18 +34,18 @@ else:
         print(i, len(test_word_pairs), word)
         try:
             translation = translator.translate(word, src='pt', dest='en').text.lower()
-            if word in br_model.wv.vocab and translation in en_model.wv.vocab and (word, translation) not in word_pairs:
+            if word in br_model and translation in en_model and (word, translation) not in word_pairs:
                 if not len(translation.split(' ')) > 1:
                     test_word_pairs.append((word, translation))
             i += 1
         except Exception as e:
             i+=1
             print(e)
-    save_obj(test_word_pairs, 'test_word_pairs_fasttext')
+    save_obj(test_word_pairs, 'test_word_pairs_fasttext_inference')
 
 
 print("================================== Testing Translation Matrix ==================================")
-translation_model = TranslationMatrix.load("/home/mattyws/Downloads/Wikipedia/translation_matrix.model")
+translation_model = TranslationMatrix.load("/home/mattyws/Downloads/Wikipedia/translation_matrix_inference.model")
 real = []
 pred = []
 top5_pred = []
