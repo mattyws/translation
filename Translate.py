@@ -4,7 +4,7 @@ from gensim.models import TranslationMatrix
 from gensim.models.keyedvectors import KeyedVectors
 from googletrans import Translator
 
-import learn
+import Learners
 import os
 from helpers import load_obj, save_obj
 
@@ -12,7 +12,7 @@ logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=lo
 
 print("================================== Loading models ==================================")
 translator = Translator()
-word2vecTrainer = learn.FastTextTrainer()
+word2vecTrainer = Learners.FastTextTrainer()
 br_model = word2vecTrainer.load_google_model("/home/mattyws/Downloads/Wikipedia/br/wiki.pt/wiki.pt")
 en_model = word2vecTrainer.load_google_model("/home/mattyws/Downloads/Wikipedia/wiki.en/wiki.en")
 word_freq = load_obj('word_count')

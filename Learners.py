@@ -79,7 +79,7 @@ class FastTextTrainer(object):
         return self.model
 
     def load_model(self, filename):
-        return Word2Vec.load(filename)
+        return FastText.load(filename)
 
     def load_google_model(self, filename):
         return FastText.load_fasttext_format(filename)

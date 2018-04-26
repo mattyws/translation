@@ -1,7 +1,7 @@
 import json
 import os
 # import ijson
-import PreProcess
+import Pre_Process
 
 
 class DataCleaner:
@@ -14,9 +14,9 @@ class DataCleaner:
         self.remove_digits = remove_digits
 
     def clean(self, text):
-        text = PreProcess.Tokenize(self.tokenizer).tokenize(text)
+        text = Pre_Process.Tokenize(self.tokenizer).tokenize(text)
         if self.stop_set is not None:
-            text = PreProcess.CleanStopWords(self.stop_set).clean(text)
+            text = Pre_Process.CleanStopWords(self.stop_set).clean(text)
         if self.stemmer is not None:
             text = [self.stemmer.stem(word) for word in text]
         if self.remove_digits is True:

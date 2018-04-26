@@ -5,7 +5,7 @@ from gensim.models.keyedvectors import KeyedVectors
 from googletrans import Translator
 from sklearn.metrics.classification import accuracy_score, recall_score, precision_score, f1_score
 
-import learn
+import Learners
 import os
 from helpers import load_obj, save_obj
 
@@ -16,7 +16,7 @@ model_file = "portuguese_wikipedia_fasttext.model"
 
 print("================================== Loading models ==================================")
 translator = Translator()
-word2vecTrainer = learn.FastTextTrainer()
+word2vecTrainer = Learners.FastTextTrainer()
 br_model = word2vecTrainer.load_google_model("/home/mattyws/Downloads/Wikipedia/br/wiki.pt/wiki.pt")
 en_model = word2vecTrainer.load_google_model("/home/mattyws/Downloads/Wikipedia/wiki.en/wiki.en")
 word_freq = load_obj('word_count')

@@ -2,14 +2,14 @@ import os
 
 import gensim
 import nltk
-import learn
+import Learners
 import logging
 import getopt
 import sys
 import re
 
 from data import JsonWikipediaDumpReader, DataCleaner, Word2VecDataIter
-from learn import EpochSaver
+from Learners import EpochSaver
 
 
 def atoi(text):
@@ -69,13 +69,13 @@ data = Word2VecDataIter(all_corpus, cleaner)
 if last_model is None:
     epoch_saver = EpochSaver(output_model_path+output_model_file)
     print("=============================== Training Model ===============================")
-    word2vecTrainer = learn.Word2VecTrainer(iter=iteration, size=size)
+    word2vecTrainer = Learners.Word2VecTrainer(iter=iteration, size=size)
     word2vecTrainer.train(all_corpus, sg=sg, callbacks=[epoch_saver])
 else:
     iteration -= int(get_elapsed_epoch(last_model))
     epoch_saver = EpochSaver(output_model_path+output_model_file, int(get_elapsed_epoch(last_model))+1)
     print("=============================== Training Existing Model ===============================")
-    word2vecTrainer = learn.Word2VecTrainer(iter=iteration, size=size)
+    word2vecTrainer = Learners.Word2VecTrainer(iter=iteration, size=size)
     model = word2vecTrainer.load_model(output_model_path+last_model)
     word2vecTrainer.retrain(model, all_corpus, sg=sg, iter=iteration, callbacks=[epoch_saver])
 
